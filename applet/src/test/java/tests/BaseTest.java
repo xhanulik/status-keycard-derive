@@ -1,6 +1,6 @@
 package tests;
 
-import applet.MainApplet;
+import applet.DeriveApplet;
 import cardTools.CardManager;
 import cardTools.CardType;
 import cardTools.RunConfig;
@@ -76,7 +76,7 @@ public class BaseTest {
 
         } else if (cardType != CardType.PHYSICAL && cardType != CardType.PHYSICAL_JAVAX) {
             // Running in the simulator
-            runCfg.setAppletToSimulate(MainApplet.class)
+            runCfg.setAppletToSimulate(DeriveApplet.class)
                     .setTestCardType(CardType.JCARDSIMLOCAL)
                     .setbReuploadApplet(true)
                     .setInstallData(installData);
