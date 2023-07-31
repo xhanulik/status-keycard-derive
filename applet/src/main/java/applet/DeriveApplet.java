@@ -102,28 +102,31 @@ public class DeriveApplet extends Applet  {
         }
     }
 
-    // PRIVATE KEY [32B] | PUBLIC KEY [65B] | CHAIN CODE [32B] | PATH [32B]
+    // PRIVATE KEY [32B] | PUBLIC KEY [65B] | CHAIN CODE [32B] | PATH
     private void testDoDerive(APDU apdu) {
         byte[] apduBuffer = apdu.getBuffer();
+        short dataLength = (short) (apduBuffer[ISO7816.OFFSET_LC] & 0xFF);
 
         // 1. extended - set private key and chaincode, derive public key
         saveKeys(apduBuffer, ISO7816.OFFSET_CDATA);
 
         // 2. prepare for derivation
-        preparePath(apduBuffer, (short) (ISO7816.OFFSET_CDATA + 32 + 32), CHAIN_CODE_SIZE);
+        short pathLen = (short) (dataLength - (PRIVATE_KEY_SIZE + PUBLIC_KEY_SIZE + CHAIN_CODE_SIZE));
+        preparePath(apduBuffer,
+                (short) (ISO7816.OFFSET_CDATA + PRIVATE_KEY_SIZE + PUBLIC_KEY_SIZE + CHAIN_CODE_SIZE),
+                pathLen);
 
         doDerive(apduBuffer, ISO7816.OFFSET_CDATA);
     }
 
     private void saveKeys(byte[] apduBuffer, short offset) {
         short privOffset = (short) (offset + 0);
-        short privLength = 32;
-        masterPrivate.setS(apduBuffer, privOffset, privLength);
+        masterPrivate.setS(apduBuffer, privOffset, PRIVATE_KEY_SIZE);
 
         short pubOffset = (short) (offset + 32);
         masterPublic.setW(apduBuffer, pubOffset, PUBLIC_KEY_SIZE);
 
-        short chainOffset = (short) (offset + privLength + PUBLIC_KEY_SIZE);
+        short chainOffset = (short) (offset + PRIVATE_KEY_SIZE + PUBLIC_KEY_SIZE);
         Util.arrayCopy(apduBuffer, chainOffset, masterChainCode, (short) 0, CHAIN_CODE_SIZE);
     }
 
