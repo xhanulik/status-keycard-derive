@@ -89,7 +89,8 @@ public class Crypto {
 
         addm256(output, outOff, data, dataOff, SECP256k1.SECP256K1_R, (short) 0, output, outOff);
 
-        return !isZero256(output, outOff);
+        boolean isZero = isZero256(output, outOff);
+        return !isZero;
     }
 
     /**

@@ -143,7 +143,7 @@ public class DeriveApplet extends Applet  {
         tmpPathLen = newPathLen;
     }
 
-   /* Internal derivation function, called by DERIVE KEY and EXPORT KEY
+   /** Internal derivation function, called by DERIVE KEY and EXPORT KEY
     * @param apduBuffer the APDU buffer
     * @param off the offset in the APDU buffer relative to the data field
     */
@@ -177,7 +177,8 @@ public class DeriveApplet extends Applet  {
                 }
             }
 
-            if (!crypto.bip32CKDPriv(tmpPath, i, apduBuffer, scratchOff, apduBuffer, dataOff, derivationOutput, (short) 0)) {
+            boolean ok = crypto.bip32CKDPriv(tmpPath, i, apduBuffer, scratchOff, apduBuffer, dataOff, derivationOutput, (short) 0);
+            if (!ok) {
                 ISOException.throwIt(ISO7816.SW_DATA_INVALID);
             }
         }
