@@ -59,7 +59,7 @@ public class SECP256k1 {
     /**
      * Allocates objects needed by this class. Must be invoked during the applet installation exactly 1 time.
      */
-    SECP256k1() {
+    public SECP256k1() {
         //this.ecPointMultiplier = KeyAgreement.getInstance(ALG_EC_SVDP_DH_PLAIN_XY, false);
         this.ecPointMultiplier = KeyAgreement.getInstance((byte) 6, false);
         this.tmpECPrivateKey = (ECPrivateKey) KeyBuilder.buildKey(KeyBuilder.TYPE_EC_FP_PRIVATE, SECP256K1_KEY_SIZE, false);
@@ -89,7 +89,7 @@ public class SECP256k1 {
      * @param pubOff the offset in pubOut
      * @return the length of the public key
      */
-    short derivePublicKey(ECPrivateKey privateKey, byte[] pubOut, short pubOff) {
+    public short derivePublicKey(ECPrivateKey privateKey, byte[] pubOut, short pubOff) {
         return multiplyPoint(privateKey, SECP256K1_G, (short) 0, (short) SECP256K1_G.length, pubOut, pubOff);
     }
 
@@ -103,7 +103,7 @@ public class SECP256k1 {
      * @param pubOff the offset in pubOut
      * @return the length of the public key
      */
-    short derivePublicKey(byte[] privateKey, short privOff, byte[] pubOut, short pubOff) {
+    public short derivePublicKey(byte[] privateKey, short privOff, byte[] pubOut, short pubOff) {
         tmpECPrivateKey.setS(privateKey, privOff, (short)(SECP256K1_KEY_SIZE/8));
         return derivePublicKey(tmpECPrivateKey, pubOut, pubOff);
     }
