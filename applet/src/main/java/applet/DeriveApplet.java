@@ -116,7 +116,7 @@ public class DeriveApplet extends Applet  {
                 (short) (ISO7816.OFFSET_CDATA + PRIVATE_KEY_SIZE + PUBLIC_KEY_SIZE + CHAIN_CODE_SIZE),
                 pathLen);
 
-        doDerive(apduBuffer, ISO7816.OFFSET_CDATA);
+        doDerive(apduBuffer, (short) 0);
     }
 
     private void saveKeys(byte[] apduBuffer, short offset) {
