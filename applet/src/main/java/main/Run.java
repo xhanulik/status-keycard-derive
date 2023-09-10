@@ -25,6 +25,37 @@ public class Run {
         // 3. select applet
         simulator.selectApplet(appletAID);
 
+        String chaincodePath = generateRandomHexString(72);
+        //generateAndPrintKeys(500, chaincodePath);
+        do {
+             byte[] data = Hex.decode(deriveValues(Hex.decode("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")));
+             CommandAPDU commandAPDU = new CommandAPDU(0xB0, 0x01, 0x00, 0x00, data);
+             ResponseAPDU response = simulator.transmitCommand(commandAPDU);
+             System.out.println(response.getSW());
+        } while(false);
+    }
+
+    public static void generateAndPrintKeys(int num, String rest) {
+        KeyPair ecKeypair = new KeyPair(KeyPair.ALG_EC_FP, (short) 256);
+        ECPrivateKey privateKey = (ECPrivateKey) ecKeypair.getPrivate();
+        ECPublicKey publicKey = (ECPublicKey) ecKeypair.getPublic();
+        SECP256k1.setCurveParameters(privateKey);
+        SECP256k1.setCurveParameters(publicKey);
+        for (int i = 0; i < num; i++) {
+            ecKeypair.genKeyPair();
+
+            byte[] privBytes = new byte[32];
+            privateKey.getS(privBytes, (short) 0);
+            byte[] pubBytes = new byte[65];
+            publicKey.getW(pubBytes, (short) 0);
+
+            String privString = bytesToHexString(privBytes);
+            String pubString = bytesToHexString(pubBytes);
+            System.out.println(privString + pubString + rest);
+        }
+    }
+
+    public static String generateValues() {
         KeyPair ecKeypair = new KeyPair(KeyPair.ALG_EC_FP, (short) 256);
         ECPrivateKey privateKey = (ECPrivateKey) ecKeypair.getPrivate();
         ECPublicKey publicKey = (ECPublicKey) ecKeypair.getPublic();
@@ -45,16 +76,34 @@ public class Run {
         String chainCode = generateRandomHexString(64);
         System.out.println("Chaincode: " + chainCode);
 
-        String path = generateRandomHexString(8);
+        String path = generateRandomHexString(16);
         System.out.println("Path: " + path);
 
-        byte[] data = Hex.decode(privString + pubString + chainCode + path);
+        String data = privString + pubString + chainCode + path;
+        System.out.println(data);
+        return data;
+    }
 
-        // 4. send APDU
-        CommandAPDU commandAPDU = new CommandAPDU(0xB0, 0x01, 0x00, 0x00, data);
-        ResponseAPDU response = simulator.transmitCommand(commandAPDU);
+    public static String deriveValues(byte[] prkey) {
+        byte[] pubkey = new byte[65];
 
-        System.out.println(new String(response.getData()));
+        SECP256k1 secp256k1 = new SECP256k1();
+        secp256k1.derivePublicKey(prkey, (short) 0, pubkey, (short) 0);
+
+        String privString = bytesToHexString(prkey);
+        String pubString = bytesToHexString(pubkey);
+        System.out.println("Private: " + privString);
+        System.out.println("Public: " + pubString);
+
+        String chainCode = generateRandomHexString(64);
+        System.out.println("Chaincode: " + chainCode);
+
+        String path = generateRandomHexString(16);
+        System.out.println("Path: " + path);
+
+        String data = privString + pubString + chainCode + path;
+        System.out.println(data);
+        return data;
     }
 
     public static String bytesToHexString(byte[] byteArray) {
