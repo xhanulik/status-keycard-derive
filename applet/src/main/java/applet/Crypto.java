@@ -1,3 +1,9 @@
+/*
+This file is copied from the Apache-licensed project XYZ.
+Original source: https://github.com/status-im/status-keycard/blob/master/src/main/java/im/status/keycard/Crypto.java
+License: Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+*/
+
 package applet;
 
 import javacard.framework.JCSystem;

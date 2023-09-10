@@ -1,0 +1,19 @@
+Notices for Project status-keycard-derive
+
+This project includes code and components under different licenses. Below are the licensing details:
+
+1. status-keycard
+
+   This project includes unmodified code from status-keycard, which is licensed under the Apache License 2.0.
+
+   - Original Source: https://github.com/status-im/status-keycard
+   - License: Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+
+2. Rest of the Project
+
+   The remaining parts of this project are licensed under the MIT License (Expat License).
+
+
+Please note that this NOTICE file is provided for compliance with the licensing terms and to give proper attribution to the authors and projects whose code has been included in this project. For the complete text of the Apache License 2.0 and the MIT License, please see the Apache-License-2.0 and LICENSE files included in this project.
+
+See the Apache-License-2.0 file for the specific language governing permissions and limitations under the Apache License 2.0.

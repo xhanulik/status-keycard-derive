@@ -146,6 +146,8 @@ public class DeriveApplet extends Applet  {
    /** Internal derivation function, called by DERIVE KEY and EXPORT KEY
     * @param apduBuffer the APDU buffer
     * @param off the offset in the APDU buffer relative to the data field
+    * This function is copied from the Apache-licensed project status-keycard.
+    * Original source: https://github.com/status-im/status-keycard/blob/master/src/main/java/im/status/keycard/KeycardApplet.java
     */
     private void doDerive(byte[] apduBuffer, short off) {
 
